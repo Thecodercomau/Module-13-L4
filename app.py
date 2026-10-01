@@ -42,7 +42,9 @@ def logout():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     msg = ''
-    if request.method == 'POST' and username in request.form and password in request.form and email in request.form:
+    if request.method == 'GET':
+        return render_template('registration.html', msg=msg)
+    if all(field in request.form for field in ('username', 'password', 'email')):
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
@@ -73,7 +75,8 @@ def register():
             return render_template('index.html', msg=msg, name=name)
     elif request.method == 'POST':
         msg = 'You must fill the details! Registration Unsuccessful'
-        return render_template('registration.html', msg=msg) 
+        return render_template('registration.html', msg=msg)
+    return render_template('registration.html', msg=msg)
 
 
 @app.route('/', methods=['GET', 'POST'])
